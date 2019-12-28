@@ -6,6 +6,7 @@ TagManager:
   tags:
   - GraphNode
   - GraphNodeLinkPoint
+  - InventoryEntry
   layers:
   - Default
   - TransparentFX

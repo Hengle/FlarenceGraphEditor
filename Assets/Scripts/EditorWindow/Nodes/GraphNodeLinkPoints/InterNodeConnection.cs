@@ -1,3 +1,4 @@
+using FlarenceGraphEditor.EditorUi.InfoPanel;
 using UnityEngine;
 
 namespace FlarenceGraphEditor.EditorWindow.Nodes.GraphNodeLinkPoints {
@@ -9,9 +10,9 @@ namespace FlarenceGraphEditor.EditorWindow.Nodes.GraphNodeLinkPoints {
 
         #endregion
         
-        private GraphNodeLinkPoint InputNode;
+        private GraphNodeLinkPointController InputNode;
         
-        private GraphNodeLinkPoint OutputNode;
+        private GraphNodeLinkPointController OutputNode;
 
         public bool IsDragging;
         private bool isFullyDrawn;
@@ -38,7 +39,8 @@ namespace FlarenceGraphEditor.EditorWindow.Nodes.GraphNodeLinkPoints {
             }
         }
         
-        public void TryConnect(GraphNodeLinkPoint endPoint) {
+        public void TryConnect(GraphNodeLinkPointController endPoint) {
+            
             if (endPoint == null) {
                 CancelConnection();
                 return;
@@ -49,7 +51,7 @@ namespace FlarenceGraphEditor.EditorWindow.Nodes.GraphNodeLinkPoints {
             
             if (endPoint.LinkType == LinkPointType.Input) {
                 if (InputNode!=null) {
-                    Debug.LogError("Cannot connect 2 inputs");
+                    DebugInfoPanelController.Instance.ShowMessage("Cannot connect 2 inputs");
                     CancelConnection();
                     return;
                 }
@@ -58,7 +60,7 @@ namespace FlarenceGraphEditor.EditorWindow.Nodes.GraphNodeLinkPoints {
             
             if (endPoint.LinkType == LinkPointType.Output) {
                 if (OutputNode!=null) {
-                    Debug.LogError("Cannot connect 2 outputs");
+                    DebugInfoPanelController.Instance.ShowMessage("Cannot connect 2 outputs");
                     CancelConnection();
                     return;
                 }
@@ -81,7 +83,7 @@ namespace FlarenceGraphEditor.EditorWindow.Nodes.GraphNodeLinkPoints {
 
         #region CreationMethods
 
-        public void StartConnecting(GraphNodeLinkPoint startPoint) {
+        public void StartConnecting(GraphNodeLinkPointController startPoint) {
             IsDragging = true;
             if (startPoint.LinkType == LinkPointType.Input) {
                 InputNode = startPoint;
@@ -114,13 +116,13 @@ namespace FlarenceGraphEditor.EditorWindow.Nodes.GraphNodeLinkPoints {
         
         #region Helper Methods
 
-        private static GraphNodeLinkPoint LookForNodeLinkPoint() {
+        private static GraphNodeLinkPointController LookForNodeLinkPoint() {
             
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             var hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
             
             if (hit && hit.transform.CompareTag(TransformTags.GraphNodeLinkPoint)) {
-                return hit.transform.GetComponent<GraphNodeLinkPoint>();
+                return hit.transform.GetComponent<GraphNodeLinkPointController>();
             }
 
             return null;

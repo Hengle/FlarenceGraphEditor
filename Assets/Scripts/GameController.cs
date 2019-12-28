@@ -8,6 +8,8 @@ namespace FlarenceGraphEditor {
         
         public GameObject ConnectionPrefab;
 
+        public Transform EditorArea;
+
         private void Awake() {
             Instance = this;
             MainCamera=Camera.main;

@@ -2,11 +2,15 @@ using FlarenceGraphEditor.EditorWindow.Nodes.GraphNodeLinkPoints;
 using UnityEngine;
 
 namespace FlarenceGraphEditor.EditorWindow.Nodes {
-    public class GraphNodeController : MonoBehaviour {
-        
-        [SerializeField]private GraphNodeLinkPoint InputNodeLinkPoint;
-        [SerializeField]private GraphNodeLinkPoint OutputNodeLinkPoint;
+    public class GraphNodeController : InteractableItem {
 
+        public override string ItemName => "Graph Node";
+        
+#pragma warning disable 649
+        [SerializeField]private GraphNodeLinkPointController InputNodeLinkPoint;
+        [SerializeField]private GraphNodeLinkPointController OutputNodeLinkPoint;
+#pragma warning restore 649
+        
         private bool _isDragging;
         private bool isDragging {
             get => _isDragging;
@@ -40,7 +44,19 @@ namespace FlarenceGraphEditor.EditorWindow.Nodes {
         }
 
         #endregion
+
+        #region Interactable Object Implementation
+
+        public override void OnLeftClickDown() {
+            StartDragging();
+        }
         
+        public override void OnCreatedFromInventory() {
+            StartDragging();
+        }
+
+        #endregion
+
         
     }
 }
